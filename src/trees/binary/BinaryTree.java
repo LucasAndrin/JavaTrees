@@ -1,6 +1,6 @@
 package trees.binary;
 
-import trees.binary.modifiers.FilterInterface;
+import trees.FilterInterface;
 
 public class BinaryTree {
 
@@ -172,26 +172,22 @@ public class BinaryTree {
 
     public String show() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("root").append(root != null ? show(root, 1) : "->null");
+        sb.append("root").append(root != null ? show(root) : "->null");
         return sb.toString();
     }
 
-    private String show(BinaryNode node, int level) {
+    private String show(BinaryNode node) {
         final StringBuilder sb = new StringBuilder();
 
-        String space = "    ".repeat(Math.max(0, level));
-        sb.append("(occurrences: ").append(node.recurrences).append(", level: ").append(node.level).append(')');
-        sb.append('[').append(node.leftHeight)
-                .append(", ").append(node.rightHeight)
-                .append("]->")
-                .append(node.value).append(":\n");
+        String space = "    ".repeat(Math.max(0, node.level));
+        sb.append(node).append(":\n");
 
         if (node.left != null) {
-            sb.append(space).append("left").append(show(node.left, level + 1));
+            sb.append(space).append("left").append(show(node.left));
         }
 
         if (node.right != null) {
-            sb.append(space).append("right").append(show(node.right, level + 1));
+            sb.append(space).append("right").append(show(node.right));
         }
 
         return sb.toString();

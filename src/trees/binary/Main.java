@@ -1,7 +1,5 @@
 package trees.binary;
 
-import trees.binary.modifiers.FilterInterface;
-
 public class Main {
     public static void main(String[] args) {
         BinaryTree tree = BinaryTree.create();

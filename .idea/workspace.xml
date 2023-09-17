@@ -5,17 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f032cec-17c4-41cb-bb04-9c02f9f0ba82" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BalancedTrees.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trees/binary/BinaryNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trees/binary/BinaryTree.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trees/binary/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trees/binary/modifiers/FilterInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/BinaryNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/BinaryNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/BinaryTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/BinaryTree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/modifiers/FilterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/FilterInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

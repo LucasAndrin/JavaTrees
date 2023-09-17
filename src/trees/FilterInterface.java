@@ -1,4 +1,4 @@
-package trees.binary.modifiers;
+package trees;
 
 @FunctionalInterface
     public interface FilterInterface<N> {

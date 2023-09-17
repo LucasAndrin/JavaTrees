@@ -78,8 +78,10 @@ public class BinaryNode {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("(occurences: ").append(recurrences).append(", level: ").append(level).append(')');
-        sb.append('[').append(leftHeight).append(", ").append(rightHeight).append("]->").append(value);
+        sb.append('{').append(level).append('}');
+        sb.append('[').append(recurrences).append(']');
+        sb.append('(').append(leftHeight).append(", ").append(rightHeight).append(')');
+        sb.append("->").append(value);
         return sb.toString();
     }
 }
