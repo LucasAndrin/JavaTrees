@@ -3,6 +3,10 @@ package trees.binary;
 import integer.trees.FilterInterface;
 import trees.interfaces.CompareInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 public class BinaryTree<V> {
     private BinaryNode<V> root;
 
@@ -133,7 +137,7 @@ public class BinaryTree<V> {
         return tree;
     }
 
-    public void filter(BinaryTree<V> tree, BinaryNode<V> node, FilterInterface<BinaryNode<V>> func) {
+    private void filter(BinaryTree<V> tree, BinaryNode<V> node, FilterInterface<BinaryNode<V>> func) {
         if (node == null) {
             return;
         }
@@ -144,6 +148,35 @@ public class BinaryTree<V> {
 
         filter(tree, node.left, func);
         filter(tree, node.right, func);
+    }
+
+    public <R> List<R> pluck(Function<BinaryNode<V>, R> attributeExtractor) {
+        List<R> extractedAttributes = new ArrayList<>();
+        pluckNode(root, extractedAttributes, attributeExtractor);
+        return extractedAttributes;
+    }
+
+    public <R> void pluckNode(BinaryNode<V> node, List<R> extractedAttributes, Function<BinaryNode<V>, R> attributeExtractor) {
+        if (node == null) {
+            return;
+        }
+
+        extractedAttributes.add(attributeExtractor.apply(node));
+
+        pluckNode(node.left, extractedAttributes, attributeExtractor);
+        pluckNode(node.right, extractedAttributes, attributeExtractor);
+    }
+
+    public int count() {
+        return count(root);
+    }
+
+    private int count(BinaryNode<V> node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return count(node.left) + count(node.right) + 1;
     }
 
     public String show() {
