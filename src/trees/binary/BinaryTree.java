@@ -179,6 +179,23 @@ public class BinaryTree<V> {
         return count(node.left) + count(node.right) + 1;
     }
 
+    public List<V> getArrayList() {
+        List<V> list = new ArrayList<>();
+        getArrayList(list, root);
+        return list;
+    }
+
+    private void getArrayList(List<V> list, BinaryNode<V> node) {
+        if (node == null) {
+            return;
+        }
+
+        list.add(node.value);
+
+        getArrayList(list, node.left);
+        getArrayList(list, node.right);
+    }
+
     public String show() {
         final StringBuilder sb = new StringBuilder();
         sb.append("root").append(root != null ? show(root) : "->null");

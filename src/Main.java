@@ -1,6 +1,8 @@
 import trees.binary.BinaryTree;
 
 import java.sql.SQLOutput;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,5 +35,9 @@ public class Main {
         System.out.println("Resultado: " + total * 100 / 8510000 + "%");
 
         System.out.println("e. Mostrar o nome da cidade com a maior população.");
+        Comparator<City> comparadorPorPreco = Comparator.comparingInt(city -> city.population);
+        List<City> cities = tree.getArrayList();
+        Collections.sort(tree.getArrayList(), comparadorPorPreco);
+        System.out.println("Resultado: " + cities.get(0).name);
     }
 }
