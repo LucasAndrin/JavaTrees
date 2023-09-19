@@ -1,64 +1,64 @@
-package trees.binary;
+package integer.trees.binary;
 
 import integer.trees.FilterInterface;
-import trees.interfaces.CompareInterface;
 
-public class BinaryTree<V> {
-    private BinaryNode<V> root;
+public class BinaryTree {
+
+    private integer.trees.binary.BinaryNode root;
 
     private boolean balance = true;
 
-    private final CompareInterface<V> leftCompareInterface, rightCompareInterface;
+    private BinaryTree() {
 
-    public  BinaryTree(CompareInterface<V> leftCompareInterface, CompareInterface<V> rightCompareInterface) {
-        this.leftCompareInterface = leftCompareInterface;
-        this.rightCompareInterface = rightCompareInterface;
     }
 
-    public BinaryTree<V> withoutBalance() {
+    public static BinaryTree create() {
+        return new BinaryTree();
+    }
+
+    public BinaryTree withoutBalance() {
         balance = false;
         return this;
     }
 
-    public void add(V value) {
+    public void add(int value) {
         root = addNode(root, value, 1);
     }
 
-    private BinaryNode<V> addNode(BinaryNode<V> node, V value, int level) {
+    private integer.trees.binary.BinaryNode addNode(integer.trees.binary.BinaryNode node, int value, int level) {
         if (node == null) {
-            return new BinaryNode<>(value, level);
+            return new integer.trees.binary.BinaryNode(value, level);
         }
 
-        if (leftCompareInterface.compare(value, node.value)) {
-            node.left = addNode(node.left, value, level + 1);
-            node.updateLeftHeight();
-        } else if (rightCompareInterface.compare(value, node.value)) {
+        if (value > node.value) {
             node.right = addNode(node.right, value, level + 1);
             node.updateRightHeight();
+        } else if (value < node.value) {
+            node.left = addNode(node.left, value, level + 1);
+            node.updateLeftHeight();
         } else {
             node.recurrences++;
         }
-
-        if (balance && !node.value.equals(value)) {
+        if (balance && node.value != value) {
             node = balance(node, level);
         }
 
         return node;
     }
 
-    public void remove(V value) {
+    public void remove(int value) {
         root = removeNode(root, value);
     }
 
-    private BinaryNode<V> removeNode(BinaryNode<V> node, V value) {
+    private integer.trees.binary.BinaryNode removeNode(integer.trees.binary.BinaryNode node, int value) {
         if (node == null) {
             return null;
         }
 
-        if (leftCompareInterface.compare(value, node.value)) {
+        if (value < node.value) {
             node.left = removeNode(node.left, value);
             node.updateLeftHeight();
-        } else if (rightCompareInterface.compare(value, node.value)) {
+        } else if (value > node.value) {
             node.right = removeNode(node.right, value);
             node.updateRightHeight();
         } else if (node.recurrences > 0) {
@@ -81,7 +81,7 @@ public class BinaryTree<V> {
         return node;
     }
 
-    private BinaryNode<V> balance(BinaryNode<V> node, int level) {
+    private integer.trees.binary.BinaryNode balance(integer.trees.binary.BinaryNode node, int level) {
         int bf = node.getBalanceFactor();
         if (bf == 2) {
             int bfRight = node.right.getBalanceFactor();
@@ -101,8 +101,8 @@ public class BinaryTree<V> {
         return node;
     }
 
-    private BinaryNode<V> rotateRight(BinaryNode<V> node) {
-        BinaryNode<V> aux = node.left;
+    private integer.trees.binary.BinaryNode rotateRight(integer.trees.binary.BinaryNode node) {
+        integer.trees.binary.BinaryNode aux = node.left;
         node.left = aux.right;
         aux.right = node;
 
@@ -112,8 +112,8 @@ public class BinaryTree<V> {
         return aux;
     }
 
-    private BinaryNode<V> rotateLeft(BinaryNode<V> node) {
-        BinaryNode<V> aux = node.right;
+    private integer.trees.binary.BinaryNode rotateLeft(integer.trees.binary.BinaryNode node) {
+        integer.trees.binary.BinaryNode aux = node.right;
         node.right = aux.left;
         aux.left = node;
 
@@ -127,13 +127,25 @@ public class BinaryTree<V> {
         return root == null || root.isBalanced();
     }
 
-    public BinaryTree<V> filter(FilterInterface<BinaryNode<V>> func) {
-        BinaryTree<V> tree = new BinaryTree<>(leftCompareInterface, rightCompareInterface);
+    public int count() {
+        return count(root);
+    }
+
+    private int count(integer.trees.binary.BinaryNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return count(node.left) + count(node.right) + 1;
+    }
+
+    public BinaryTree filter(FilterInterface<integer.trees.binary.BinaryNode> func) {
+        BinaryTree tree = create();
         filter(tree, root, func);
         return tree;
     }
 
-    public void filter(BinaryTree<V> tree, BinaryNode<V> node, FilterInterface<BinaryNode<V>> func) {
+    private void filter(BinaryTree tree, integer.trees.binary.BinaryNode node, FilterInterface<integer.trees.binary.BinaryNode> func) {
         if (node == null) {
             return;
         }
@@ -146,13 +158,25 @@ public class BinaryTree<V> {
         filter(tree, node.right, func);
     }
 
+    public int sum() {
+        return sum(root);
+    }
+
+    private int sum(integer.trees.binary.BinaryNode node) {
+        if (node == null) {
+            return 0;
+        }
+
+        return node.value + sum(node.left) + sum(node.right);
+    }
+
     public String show() {
         final StringBuilder sb = new StringBuilder();
         sb.append("root").append(root != null ? show(root) : "->null");
         return sb.toString();
     }
 
-    private String show(BinaryNode<V> node) {
+    private String show(integer.trees.binary.BinaryNode node) {
         final StringBuilder sb = new StringBuilder();
 
         String space = "    ".repeat(Math.max(0, node.level));
@@ -168,4 +192,5 @@ public class BinaryTree<V> {
 
         return sb.toString();
     }
+
 }

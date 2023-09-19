@@ -5,7 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6f032cec-17c4-41cb-bb04-9c02f9f0ba82" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/integer/trees/binary/BinaryNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/integer/trees/binary/BinaryTree.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/integer/trees/binary/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/trees/interfaces/CompareInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/trees/interfaces/FilterInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/FilterInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/integer/trees/FilterInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/BinaryNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/BinaryNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trees/binary/BinaryTree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/BinaryTree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/trees/binary/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/trees/binary/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,13 +49,18 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.updates&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="trees.binary" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="trees.binary.Main" />
       <module name="BalancedTrees" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="trees.binary.*" />
+          <option name="PATTERN" value="trees.binary.interfaces.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>

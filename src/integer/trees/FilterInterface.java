@@ -1,4 +1,4 @@
-package trees;
+package integer.trees;
 
 @FunctionalInterface
     public interface FilterInterface<N> {
