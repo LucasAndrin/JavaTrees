@@ -1,6 +1,5 @@
 import trees.binary.BinaryTree;
 
-import java.sql.SQLOutput;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

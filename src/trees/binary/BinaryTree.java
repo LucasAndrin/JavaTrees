@@ -1,6 +1,6 @@
 package trees.binary;
 
-import integer.trees.FilterInterface;
+import trees.interfaces.FilterInterface;
 import trees.interfaces.CompareInterface;
 
 import java.util.ArrayList;
