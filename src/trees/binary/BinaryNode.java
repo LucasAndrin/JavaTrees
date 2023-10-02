@@ -4,7 +4,7 @@ public class BinaryNode<V> {
 
     public V value;
 
-    public int leftHeight, rightHeight, recurrences, level;
+    public int leftHeight, rightHeight, level;
 
     public BinaryNode<V> left, right;
 
@@ -50,16 +50,10 @@ public class BinaryNode<V> {
         return aux;
     }
 
-    protected boolean isBalanced() {
-        int bf = getBalanceFactor();
-        return bf < 2 && bf > -2 && (left == null || left.isBalanced()) && (right == null || right.isBalanced());
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append('{').append(level).append('}');
-        sb.append('[').append(recurrences).append(']');
         sb.append('(').append(leftHeight).append(", ").append(rightHeight).append(')');
         sb.append("->").append(value);
         return sb.toString();

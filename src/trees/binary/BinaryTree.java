@@ -3,25 +3,14 @@ package trees.binary;
 import trees.interfaces.FilterInterface;
 import trees.interfaces.CompareInterface;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
 public class BinaryTree<V> {
     private BinaryNode<V> root;
-
-    private boolean balance = true;
 
     private final CompareInterface<V> leftCompareInterface, rightCompareInterface;
 
     public  BinaryTree(CompareInterface<V> leftCompareInterface, CompareInterface<V> rightCompareInterface) {
         this.leftCompareInterface = leftCompareInterface;
         this.rightCompareInterface = rightCompareInterface;
-    }
-
-    public BinaryTree<V> withoutBalance() {
-        balance = false;
-        return this;
     }
 
     public void add(V value) {
@@ -39,11 +28,9 @@ public class BinaryTree<V> {
         } else if (rightCompareInterface.compare(value, node.value)) {
             node.right = addNode(node.right, value, level + 1);
             node.updateRightHeight();
-        } else {
-            node.recurrences++;
         }
 
-        if (balance && !node.value.equals(value)) {
+        if (!node.value.equals(value)) {
             node = balance(node, level);
         }
 
@@ -65,9 +52,6 @@ public class BinaryTree<V> {
         } else if (rightCompareInterface.compare(value, node.value)) {
             node.right = removeNode(node.right, value);
             node.updateRightHeight();
-        } else if (node.recurrences > 0) {
-            node.recurrences--;
-            return node;
         } else if (node.left == null) {
             return node.right;
         } else if (node.right == null) {
@@ -78,9 +62,7 @@ public class BinaryTree<V> {
             node.updateRightHeight();
         }
 
-        if (balance) {
-            node = balance(node, node.level);
-        }
+        node = balance(node, node.level);
 
         return node;
     }
@@ -127,10 +109,6 @@ public class BinaryTree<V> {
         return aux;
     }
 
-    public boolean isBalanced() {
-        return root == null || root.isBalanced();
-    }
-
     public BinaryTree<V> filter(FilterInterface<BinaryNode<V>> func) {
         BinaryTree<V> tree = new BinaryTree<>(leftCompareInterface, rightCompareInterface);
         filter(tree, root, func);
@@ -150,23 +128,6 @@ public class BinaryTree<V> {
         filter(tree, node.right, func);
     }
 
-    public <R> List<R> pluck(Function<BinaryNode<V>, R> attributeExtractor) {
-        List<R> extractedAttributes = new ArrayList<>();
-        pluckNode(root, extractedAttributes, attributeExtractor);
-        return extractedAttributes;
-    }
-
-    public <R> void pluckNode(BinaryNode<V> node, List<R> extractedAttributes, Function<BinaryNode<V>, R> attributeExtractor) {
-        if (node == null) {
-            return;
-        }
-
-        extractedAttributes.add(attributeExtractor.apply(node));
-
-        pluckNode(node.left, extractedAttributes, attributeExtractor);
-        pluckNode(node.right, extractedAttributes, attributeExtractor);
-    }
-
     public int count() {
         return count(root);
     }
@@ -177,23 +138,6 @@ public class BinaryTree<V> {
         }
 
         return count(node.left) + count(node.right) + 1;
-    }
-
-    public List<V> getArrayList() {
-        List<V> list = new ArrayList<>();
-        getArrayList(list, root);
-        return list;
-    }
-
-    private void getArrayList(List<V> list, BinaryNode<V> node) {
-        if (node == null) {
-            return;
-        }
-
-        list.add(node.value);
-
-        getArrayList(list, node.left);
-        getArrayList(list, node.right);
     }
 
     public String show() {
