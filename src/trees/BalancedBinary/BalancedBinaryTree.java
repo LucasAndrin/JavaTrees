@@ -1,17 +1,12 @@
-package trees.binary;
+package trees.BalancedBinary;
 
-import trees.interfaces.FilterInterface;
-import trees.interfaces.CompareInterface;
+import trees.Tree;
 
-public class BinaryTree<V> {
+import java.util.function.Predicate;
+
+public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
+
     private BinaryNode<V> root;
-
-    private final CompareInterface<V> leftCompareInterface, rightCompareInterface;
-
-    public  BinaryTree(CompareInterface<V> leftCompareInterface, CompareInterface<V> rightCompareInterface) {
-        this.leftCompareInterface = leftCompareInterface;
-        this.rightCompareInterface = rightCompareInterface;
-    }
 
     public void add(V value) {
         root = addNode(root, value, 1);
@@ -22,10 +17,10 @@ public class BinaryTree<V> {
             return new BinaryNode<>(value, level);
         }
 
-        if (leftCompareInterface.compare(value, node.value)) {
+        if (node.isLowerThan(value)) {
             node.left = addNode(node.left, value, level + 1);
             node.updateLeftHeight();
-        } else if (rightCompareInterface.compare(value, node.value)) {
+        } else if (node.isGreaterThan(value)) {
             node.right = addNode(node.right, value, level + 1);
             node.updateRightHeight();
         }
@@ -46,10 +41,10 @@ public class BinaryTree<V> {
             return null;
         }
 
-        if (leftCompareInterface.compare(value, node.value)) {
+        if (node.isLowerThan(value)) {
             node.left = removeNode(node.left, value);
             node.updateLeftHeight();
-        } else if (rightCompareInterface.compare(value, node.value)) {
+        } else if (node.isGreaterThan(value)) {
             node.right = removeNode(node.right, value);
             node.updateRightHeight();
         } else if (node.left == null) {
@@ -109,18 +104,18 @@ public class BinaryTree<V> {
         return aux;
     }
 
-    public BinaryTree<V> filter(FilterInterface<BinaryNode<V>> func) {
-        BinaryTree<V> tree = new BinaryTree<>(leftCompareInterface, rightCompareInterface);
+    public BalancedBinaryTree<V> filter(Predicate<BinaryNode<V>> func) {
+        BalancedBinaryTree<V> tree = new BalancedBinaryTree<>();
         filter(tree, root, func);
         return tree;
     }
 
-    private void filter(BinaryTree<V> tree, BinaryNode<V> node, FilterInterface<BinaryNode<V>> func) {
+    private void filter(BalancedBinaryTree<V> tree, BinaryNode<V> node, Predicate<BinaryNode<V>> func) {
         if (node == null) {
             return;
         }
 
-        if (func.apply(node)) {
+        if (func.test(node)) {
             tree.add(node.value);
         }
 

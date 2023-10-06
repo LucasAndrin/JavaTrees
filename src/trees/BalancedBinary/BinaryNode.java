@@ -1,6 +1,6 @@
-package trees.binary;
+package trees.BalancedBinary;
 
-public class BinaryNode<V> {
+public class BinaryNode<V extends Comparable<V>> {
 
     public V value;
 
@@ -48,6 +48,16 @@ public class BinaryNode<V> {
             aux = aux.left;
         }
         return aux;
+    }
+
+    public boolean isGreaterThan(V value) {
+        boolean test = value.compareTo(this.value) > 0;
+        return test;
+    }
+
+    public boolean isLowerThan(V value) {
+        boolean test = value.compareTo(this.value) < 0;
+        return test;
     }
 
     @Override
