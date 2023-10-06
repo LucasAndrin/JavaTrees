@@ -1,16 +1,13 @@
 package trees;
 
-public class BinarySearchNode<V extends Comparable<V>> extends Level {
-
-    protected V value;
+public class BinarySearchNode<V extends Comparable<V>> extends BinaryNode<V> {
 
     protected int leftHeight, rightHeight;
 
     protected BinarySearchNode<V> left, right;
 
-    protected BinarySearchNode(V value, int level) {
-        super(level);
-        this.value = value;
+    protected BinarySearchNode(int level, V value) {
+        super(level, value);
     }
 
     protected void updateLeftHeight() {
@@ -42,27 +39,10 @@ public class BinarySearchNode<V extends Comparable<V>> extends Level {
         return rightHeight - leftHeight;
     }
 
-    protected BinarySearchNode<V> getSmaller() {
-        BinarySearchNode<V> aux = this;
-        while (aux.left != null) {
-            aux = aux.left;
-        }
-        return aux;
-    }
-
-    protected boolean isGreaterThan(V value) {
-        return value.compareTo(this.value) > 0;
-    }
-
-    protected boolean isLowerThan(V value) {
-        return value.compareTo(this.value) < 0;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append('{').append(level).append('}');
-        sb.append('(').append(leftHeight).append(", ").append(rightHeight).append(')');
         sb.append("->").append(value);
         return sb.toString();
     }

@@ -2,24 +2,24 @@ package trees;
 
 import java.util.function.Predicate;
 
-public class BinarySearchTree<V extends Comparable<V>> extends Tree<V> {
+public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
 
-    private BinarySearchNode<V> root;
+    protected BinarySearchNode<V> root;
 
     public void add(V value) {
-        root = addNode(root, value, 1);
+        root = addNode(root, 1, value);
     }
 
-    private BinarySearchNode<V> addNode(BinarySearchNode<V> node, V value, int level) {
+    private BinarySearchNode<V> addNode(BinarySearchNode<V> node, int level, V value) {
         if (node == null) {
-            return new BinarySearchNode<>(value, level);
+            return new BinarySearchNode<>(level, value);
         }
 
         if (node.isLowerThan(value)) {
-            node.left = addNode(node.left, value, level + 1);
+            node.left = addNode(node.left, level + 1, value);
             node.updateLeftHeight();
         } else if (node.isGreaterThan(value)) {
-            node.right = addNode(node.right, value, level + 1);
+            node.right = addNode(node.right, level + 1, value);
             node.updateRightHeight();
         }
 
@@ -50,7 +50,7 @@ public class BinarySearchTree<V extends Comparable<V>> extends Tree<V> {
         } else if (node.right == null) {
             return node.left;
         } else {
-            node.value = node.right.getSmaller().value;
+            node.value = node.right.getLower().value;
             node.right = removeNode(node.right, node.value);
             node.updateRightHeight();
         }

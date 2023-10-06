@@ -1,10 +1,13 @@
 package trees;
 
-public abstract class Tree<V extends Comparable<V>> {
+public interface Tree<V extends Comparable<V>> {
 
-    public abstract void add(V value);
+    void clear();
 
+    void add(V value);
 
-    abstract void remove(V value);
+    void remove(V value);
+
+    String show();
 
 }

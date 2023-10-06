@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
         int[] limits = { 100000, 1000000 };
         List<Tree<Integer>> trees = new ArrayList<>();
@@ -15,6 +16,7 @@ public class Main {
             for (int limit : limits) {
                 long elapsedTime = Helper.getExecutionTime(() -> insertions(tree, limit));
                 System.out.println(name + "->" + limit + " insertions: " + elapsedTime + "ms");
+                tree.clear();
             }
         }
     }
