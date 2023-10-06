@@ -1,4 +1,4 @@
-import trees.BalancedBinary.BalancedBinaryTree;
+import trees.BinarySearchTree;
 import trees.Tree;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         int[] limits = { 100000, 1000000 };
         List<Tree<Integer>> trees = new ArrayList<>();
-        trees.add(new BalancedBinaryTree<>());
+        trees.add(new BinarySearchTree<>());
 
         for (Tree<Integer> tree : trees) {
             String name = tree.getClass().getSimpleName();

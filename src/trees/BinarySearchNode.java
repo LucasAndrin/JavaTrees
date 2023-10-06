@@ -1,16 +1,16 @@
-package trees.BalancedBinary;
+package trees;
 
-public class BinaryNode<V extends Comparable<V>> {
+public class BinarySearchNode<V extends Comparable<V>> extends Level {
 
-    public V value;
+    protected V value;
 
-    public int leftHeight, rightHeight, level;
+    protected int leftHeight, rightHeight;
 
-    public BinaryNode<V> left, right;
+    protected BinarySearchNode<V> left, right;
 
-    public BinaryNode(V value, int level) {
+    protected BinarySearchNode(V value, int level) {
+        super(level);
         this.value = value;
-        this.level = level;
     }
 
     protected void updateLeftHeight() {
@@ -21,7 +21,7 @@ public class BinaryNode<V extends Comparable<V>> {
         rightHeight = getNewHeight(right) + 1;
     }
 
-    private int getNewHeight(BinaryNode<V> node) {
+    protected int getNewHeight(BinarySearchNode<V> node) {
         if (node == null) {
             return - 1;
         }
@@ -42,22 +42,20 @@ public class BinaryNode<V extends Comparable<V>> {
         return rightHeight - leftHeight;
     }
 
-    protected BinaryNode<V> getSmaller() {
-        BinaryNode<V> aux = this;
+    protected BinarySearchNode<V> getSmaller() {
+        BinarySearchNode<V> aux = this;
         while (aux.left != null) {
             aux = aux.left;
         }
         return aux;
     }
 
-    public boolean isGreaterThan(V value) {
-        boolean test = value.compareTo(this.value) > 0;
-        return test;
+    protected boolean isGreaterThan(V value) {
+        return value.compareTo(this.value) > 0;
     }
 
-    public boolean isLowerThan(V value) {
-        boolean test = value.compareTo(this.value) < 0;
-        return test;
+    protected boolean isLowerThan(V value) {
+        return value.compareTo(this.value) < 0;
     }
 
     @Override
@@ -68,5 +66,4 @@ public class BinaryNode<V extends Comparable<V>> {
         sb.append("->").append(value);
         return sb.toString();
     }
-
 }

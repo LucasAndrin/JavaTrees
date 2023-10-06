@@ -1,6 +1,10 @@
 package trees;
 
-public abstract class Tree<V> {
+public abstract class Tree<V extends Comparable<V>> {
+
     public abstract void add(V value);
-    public abstract void remove(V value);
+
+
+    abstract void remove(V value);
+
 }

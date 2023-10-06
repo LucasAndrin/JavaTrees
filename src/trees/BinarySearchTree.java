@@ -1,20 +1,18 @@
-package trees.BalancedBinary;
-
-import trees.Tree;
+package trees;
 
 import java.util.function.Predicate;
 
-public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
+public class BinarySearchTree<V extends Comparable<V>> extends Tree<V> {
 
-    private BinaryNode<V> root;
+    private BinarySearchNode<V> root;
 
     public void add(V value) {
         root = addNode(root, value, 1);
     }
 
-    private BinaryNode<V> addNode(BinaryNode<V> node, V value, int level) {
+    private BinarySearchNode<V> addNode(BinarySearchNode<V> node, V value, int level) {
         if (node == null) {
-            return new BinaryNode<>(value, level);
+            return new BinarySearchNode<>(value, level);
         }
 
         if (node.isLowerThan(value)) {
@@ -36,7 +34,7 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         root = removeNode(root, value);
     }
 
-    private BinaryNode<V> removeNode(BinaryNode<V> node, V value) {
+    private BinarySearchNode<V> removeNode(BinarySearchNode<V> node, V value) {
         if (node == null) {
             return null;
         }
@@ -62,7 +60,7 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return node;
     }
 
-    private BinaryNode<V> balance(BinaryNode<V> node, int level) {
+    private BinarySearchNode<V> balance(BinarySearchNode<V> node, int level) {
         int bf = node.getBalanceFactor();
         if (bf == 2) {
             int bfRight = node.right.getBalanceFactor();
@@ -82,8 +80,8 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return node;
     }
 
-    private BinaryNode<V> rotateRight(BinaryNode<V> node) {
-        BinaryNode<V> aux = node.left;
+    private BinarySearchNode<V> rotateRight(BinarySearchNode<V> node) {
+        BinarySearchNode<V> aux = node.left;
         node.left = aux.right;
         aux.right = node;
 
@@ -93,8 +91,8 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return aux;
     }
 
-    private BinaryNode<V> rotateLeft(BinaryNode<V> node) {
-        BinaryNode<V> aux = node.right;
+    private BinarySearchNode<V> rotateLeft(BinarySearchNode<V> node) {
+        BinarySearchNode<V> aux = node.right;
         node.right = aux.left;
         aux.left = node;
 
@@ -104,13 +102,13 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return aux;
     }
 
-    public BalancedBinaryTree<V> filter(Predicate<BinaryNode<V>> func) {
-        BalancedBinaryTree<V> tree = new BalancedBinaryTree<>();
+    public BinarySearchTree<V> filter(Predicate<BinarySearchNode<V>> func) {
+        BinarySearchTree<V> tree = new BinarySearchTree<>();
         filter(tree, root, func);
         return tree;
     }
 
-    private void filter(BalancedBinaryTree<V> tree, BinaryNode<V> node, Predicate<BinaryNode<V>> func) {
+    private void filter(BinarySearchTree<V> tree, BinarySearchNode<V> node, Predicate<BinarySearchNode<V>> func) {
         if (node == null) {
             return;
         }
@@ -127,7 +125,7 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return count(root);
     }
 
-    private int count(BinaryNode<V> node) {
+    private int count(BinarySearchNode<V> node) {
         if (node == null) {
             return 0;
         }
@@ -141,7 +139,7 @@ public class BalancedBinaryTree<V extends Comparable<V>> extends Tree<V> {
         return sb.toString();
     }
 
-    private String show(BinaryNode<V> node) {
+    private String show(BinarySearchNode<V> node) {
         final StringBuilder sb = new StringBuilder();
 
         String space = "    ".repeat(Math.max(0, node.level));
