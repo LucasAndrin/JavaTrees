@@ -7,6 +7,10 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+        test();
+    }
+
+    public static void test() {
         int[] limits = { 100000, 1000000 };
         List<Tree<Integer>> trees = new ArrayList<>();
         trees.add(new BinarySearchTree<>());
