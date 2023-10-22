@@ -22,9 +22,8 @@ public class Key<T extends Comparable<T>> {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Key{");
+        final StringBuilder sb = new StringBuilder();
         sb.append(value);
-        sb.append('}');
         return sb.toString();
     }
 }
