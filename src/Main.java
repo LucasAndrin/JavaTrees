@@ -1,4 +1,5 @@
 import trees.BinarySearchTree;
+import trees.BinaryTree;
 import trees.Tree;
 import trees.btree.BTree;
 

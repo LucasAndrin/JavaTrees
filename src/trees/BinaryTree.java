@@ -53,6 +53,27 @@ public class BinaryTree<V extends Comparable<V>> implements Tree<V> {
         return node;
     }
 
+    @Override
+    public boolean exists(V value) {
+        return existsNode(root, value);
+    }
+
+    boolean existsNode(BinaryNode<V> node, V value) {
+        if (node == null) {
+            return false;
+        }
+
+        if (node.isLowerThan(value)) {
+            return existsNode(node.left, value);
+        }
+
+        if (node.isGreaterThan(value)) {
+            return existsNode(node.right, value);
+        }
+
+        return true;
+    }
+
     public String show() {
         final StringBuilder sb = new StringBuilder();
         sb.append("root").append(root != null ? show(root) : "->null");

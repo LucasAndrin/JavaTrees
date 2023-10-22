@@ -1,12 +1,14 @@
 package trees;
 
-public interface Tree<V extends Comparable<V>> {
+public interface Tree<T extends Comparable<T>> {
 
     void clear();
 
-    void add(V value);
+    void add(T value);
 
-    void remove(V value);
+    void remove(T value);
+
+    boolean exists(T value);
 
     String show();
 

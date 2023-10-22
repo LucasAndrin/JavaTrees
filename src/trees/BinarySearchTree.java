@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 
 public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
 
-    protected BinarySearchNode<V> root;
+    private BinarySearchNode<V> root;
 
     public void add(V value) {
         root = addNode(root, 1, value);
@@ -58,6 +58,11 @@ public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
         node = balance(node, node.level);
 
         return node;
+    }
+
+    @Override
+    public boolean exists(V value) {
+        return existsNode(root, value);
     }
 
     private BinarySearchNode<V> balance(BinarySearchNode<V> node, int level) {

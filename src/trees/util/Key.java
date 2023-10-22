@@ -8,12 +8,16 @@ public class Key<T extends Comparable<T>> {
         this.value = value;
     }
 
-    public boolean isGreaterThanValue(T key) {
-        return this.value.compareTo(key) > 0;
+    public boolean isEqualsToValue(T value) {
+        return this.value.compareTo(value) == 0;
     }
 
-    public boolean isLowerThanValue(T key) {
-        return this.value.compareTo(key) < 0;
+    public boolean isGreaterThanValue(T value) {
+        return this.value.compareTo(value) > 0;
+    }
+
+    public boolean isLowerThanValue(T value) {
+        return this.value.compareTo(value) < 0;
     }
 
     public static <T extends Comparable<T>> Key<T> create(T key) {

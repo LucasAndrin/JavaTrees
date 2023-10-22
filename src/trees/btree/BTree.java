@@ -41,13 +41,10 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
         }
     }
 
-    protected void splitRoot() {
-        BTreeNode<T> newRoot = BTreeNode.create(limit);
-        newRoot.childs.add(root.leaf());
-        newRoot.root().splitChild(0, root);
-
-        root = newRoot;
+    public boolean exists(T value) {
+        return root != null && root.exists(value);
     }
+
 
     @Override
     public void remove(T value) {
@@ -58,4 +55,13 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
     public String show() {
         return null;
     }
+
+    protected void splitRoot() {
+        BTreeNode<T> newRoot = BTreeNode.create(limit);
+        newRoot.childs.add(root.leaf());
+        newRoot.root().splitChild(0, root);
+
+        root = newRoot;
+    }
+
 }

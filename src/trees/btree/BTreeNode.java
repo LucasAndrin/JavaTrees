@@ -38,7 +38,7 @@ public class BTreeNode<T extends Comparable<T>> {
         return keys.size() == limit;
     }
 
-    public void add(T value) {
+    protected void add(T value) {
         int index = getNextIndex(value);
         if (isLeaf()) {
             keys.add(index, Key.create(value));
@@ -50,6 +50,25 @@ public class BTreeNode<T extends Comparable<T>> {
                 splitChild(index, child);
             }
         }
+    }
+
+    protected boolean exists(T value) {
+        ListIterator<Key<T>> iterator = keys.listIterator();
+        while (iterator.hasNext()) {
+            Key<T> key = iterator.next();
+
+            if (key.isEqualsToValue(value)) {
+                return true;
+            } else if (key.isLowerThanValue(value)) {
+                int index = iterator.previousIndex();
+                return checkChildIndex(index) && childs.get(index).exists(value);
+            } else if (!iterator.hasNext()) {
+                int index = iterator.nextIndex();
+                return checkChildIndex(index) && childs.get(index).exists(value);
+            }
+        }
+
+        return false;
     }
 
     protected void splitChild(int nextIndex, BTreeNode<T> child) {
@@ -114,6 +133,10 @@ public class BTreeNode<T extends Comparable<T>> {
 
     protected int getMediumIndex() {
         return keys.size() / 2;
+    }
+
+    private boolean checkChildIndex(int index) {
+        return index >= 0 && index < childs.size();
     }
 
     protected static <T extends Comparable<T>> BTreeNode<T> create(int limit) {
