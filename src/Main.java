@@ -1,5 +1,4 @@
 import trees.BinarySearchTree;
-import trees.BinaryTree;
 import trees.Tree;
 import trees.btree.BTree;
 
@@ -13,40 +12,63 @@ public class Main {
     }
 
     private static void test() {
-        int[] factors = { 1, 1000 };
         int[] limits = { 100000, 1000000 };
         List<Tree<Integer>> trees = new ArrayList<>();
         trees.add(new BTree<>(20));
         trees.add(new BinarySearchTree<>());
-        trees.add(new BinaryTree<>());
+//        trees.add(new BinaryTree<>());
 
-        for (int factor : factors) {
-            for (int limit : limits) {
-                System.out.println(limit + " insertions with factor: " + factor);
-                for (Tree<Integer> tree : trees) {
-                    long elapsedTime = insertions(tree, limit, factor);
-                    System.out.println(tree.getClass().getSimpleName() + "->" + elapsedTime + "ms");
-                    tree.clear();
-                }
+        for (int limit : limits) {
+            System.out.println("#######################################");
+            System.out.println("LIMIT: " + limit);
+
+            System.out.println("RANDOMIZED: ");
+            int[] integers = Helper.getRandomizedIntegersByLimit(limit);
+
+            for (Tree<Integer> tree : trees) {
+                testTree(tree, integers);
+            }
+
+            System.out.println("LINEAR: ");
+            integers = Helper.getIntegersByLimit(limit);
+
+            for (Tree<Integer> tree : trees) {
+                testTree(tree, integers);
             }
         }
     }
 
-    private static long insertions(Tree<Integer> tree, int limit, int factor) {
-        if (factor <= 0) {
-            throw new IllegalArgumentException("The 'factor' argument must be greater than 0!");
+    private static void testTree(Tree<Integer> tree, int[] integers) {
+        System.out.println(tree.getClass().getSimpleName());
+
+        double elapsedTime = insertions(tree, integers);
+        System.out.println("Insertions: " + elapsedTime + "ms");
+
+        elapsedTime = search(tree, integers);
+        System.out.println("Search: " + elapsedTime + "ms");
+
+        elapsedTime = deletes(tree, integers);
+        System.out.println("Deletes: " + elapsedTime + "ms");
+        tree.clear();
+    }
+
+    private static double insertions(Tree<Integer> tree, int[] integers) {
+        double time = 0;
+        for (int integer : integers) {
+            time += Helper.getExecutionTime(() -> tree.add(integer));
         }
-        long time = 0;
-        int halfLimit = limit / 2;
-        for (int i = 0; i < halfLimit; i+= factor) {
-            for (int j = i; j < Math.min(i + factor, halfLimit); j++) {
-                int finalJ = j;
-                time += Helper.getExecutionTime(() -> tree.add(finalJ));
-            }
-            for (int j = limit - 1 - i; j >= Math.max(limit - factor - 1, halfLimit); j--) {
-                int finalJ = j;
-                time += Helper.getExecutionTime(() -> tree.add(finalJ));
-            }
+
+        return time;
+    }
+
+    private static double search(Tree<Integer> tree, int[] integers) {
+        return Helper.getExecutionTime(() -> tree.exists(integers.length));
+    }
+
+    private static double deletes(Tree<Integer> tree, int[] integers) {
+        double time = 0;
+        for (int integer : integers) {
+            time += Helper.getExecutionTime(() -> tree.remove(integer));
         }
 
         return time;

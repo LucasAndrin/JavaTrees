@@ -59,7 +59,7 @@ public class BTreeNode<T extends Comparable<T>> {
 
             if (key.isEqualsToValue(value)) {
                 return true;
-            } else if (key.isLowerThanValue(value)) {
+            } else if (key.isGreaterThanValue(value)) {
                 int index = iterator.previousIndex();
                 return checkChildIndex(index) && childs.get(index).exists(value);
             } else if (!iterator.hasNext()) {
