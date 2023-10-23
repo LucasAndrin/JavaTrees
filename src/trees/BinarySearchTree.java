@@ -15,10 +15,10 @@ public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
             return new BinarySearchNode<>(level, value);
         }
 
-        if (node.isLowerThan(value)) {
+        if (node.isGreaterThan(value)) {
             node.left = addNode(node.left, level + 1, value);
             node.updateLeftHeight();
-        } else if (node.isGreaterThan(value)) {
+        } else if (node.isLowerThan(value)) {
             node.right = addNode(node.right, level + 1, value);
             node.updateRightHeight();
         }
@@ -39,10 +39,10 @@ public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
             return null;
         }
 
-        if (node.isLowerThan(value)) {
+        if (node.isGreaterThan(value)) {
             node.left = removeNode(node.left, value);
             node.updateLeftHeight();
-        } else if (node.isGreaterThan(value)) {
+        } else if (node.isLowerThan(value)) {
             node.right = removeNode(node.right, value);
             node.updateRightHeight();
         } else if (node.left == null) {
@@ -63,6 +63,20 @@ public class BinarySearchTree<V extends Comparable<V>> extends BinaryTree<V> {
     @Override
     public boolean exists(V value) {
         return existsNode(root, value);
+    }
+
+    private boolean existsNode(BinarySearchNode<V> node, V value) {
+        while (node != null) {
+            if (node.isGreaterThan(value)) {
+                node = node.left;
+            } else if (node.isLowerThan(value)) {
+                node = node.right;
+            } else {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private BinarySearchNode<V> balance(BinarySearchNode<V> node, int level) {

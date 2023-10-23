@@ -13,20 +13,19 @@ public class Main {
     }
 
     private static void test() {
-        int[] factors = { 1, 5, 10, 25, 50, 100 };
+        int[] factors = { 1, 1000 };
         int[] limits = { 100000, 1000000 };
         List<Tree<Integer>> trees = new ArrayList<>();
+        trees.add(new BTree<>(20));
         trees.add(new BinarySearchTree<>());
-        trees.add(new BTree<>(25));
+        trees.add(new BinaryTree<>());
 
-        for (Tree<Integer> tree : trees) {
-            String name = tree.getClass().getSimpleName();
+        for (int factor : factors) {
             for (int limit : limits) {
-                System.out.println(name + "->" + limit + " insertions: ");
-                for (int factor : factors) {
+                System.out.println(limit + " insertions with factor: " + factor);
+                for (Tree<Integer> tree : trees) {
                     long elapsedTime = insertions(tree, limit, factor);
-                    System.out.println("factor: " + factor + "->" + elapsedTime + "ms");
-
+                    System.out.println(tree.getClass().getSimpleName() + "->" + elapsedTime + "ms");
                     tree.clear();
                 }
             }

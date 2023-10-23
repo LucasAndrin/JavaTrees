@@ -10,21 +10,31 @@ public class BinaryTree<V extends Comparable<V>> implements Tree<V> {
 
     @Override
     public void add(V value) {
-        root = addNode(root, 1, value);
-    }
+        int level = 1;
 
-    private BinaryNode<V> addNode(BinaryNode<V> node, int level, V value) {
-        if (node == null) {
-            return new BinaryNode<>(level, value);
+        if (root == null) {
+            root = new BinaryNode<>(level, value);
+        } else {
+            BinaryNode<V> prev = null;
+            BinaryNode<V> node = root;
+            while (node != null) {
+                prev = node;
+                if (node.isGreaterThan(value)) {
+                    node = node.left;
+                } else if (node.isLowerThan(value)) {
+                    node = node.right;
+                } else {
+                    return;
+                }
+                level++;
+            }
+
+            if (prev.isGreaterThan(value)) {
+                prev.left = new BinaryNode<>(level, value);
+            } else if (prev.isLowerThan(value)) {
+                prev.right = new BinaryNode<>(level, value);
+            }
         }
-
-        if (node.isLowerThan(value)) {
-            node.left = addNode(node.left, level + 1, value);
-        } else if (node.isGreaterThan(value)) {
-            node.right = addNode(node.right, level + 1, value);
-        }
-
-        return node;
     }
 
     @Override
@@ -33,45 +43,71 @@ public class BinaryTree<V extends Comparable<V>> implements Tree<V> {
     }
 
     private BinaryNode<V> removeNode(BinaryNode<V> node, V value) {
-        if (node == null) {
-            return null;
-        }
+        BinaryNode<V> current = node;
+        BinaryNode<V> parent = null;
 
-        if (node.isLowerThan(value)) {
-            node.left = removeNode(node.left, value);
-        } else if (node.isGreaterThan(value)) {
-            node.right = removeNode(node.right, value);
-        } else if (node.left == null) {
-            return node.right;
-        } else if (node.right == null) {
-            return node.left;
-        } else {
-            node.value = node.right.getLower().value;
-            node.right = removeNode(node.right, node.value);
+        while (current != null) {
+            if (current.isGreaterThan(value)) {
+                parent = current;
+                current = current.left;
+            } else if (current.isLowerThan(value)) {
+                parent = current;
+                current = current.right;
+            } else {
+                if (current.left == null) {
+                    if (parent == null) {
+                        return current.right;
+                    }
+                    if (parent.left == current) {
+                        parent.left = current.right;
+                    } else {
+                        parent.right = current.right;
+                    }
+                    return node;
+                } else if (current.right == null) {
+                    if (parent == null) {
+                        return current.left;
+                    }
+                    if (parent.left == current) {
+                        parent.left = current.left;
+                    } else {
+                        parent.right = current.left;
+                    }
+                    return node;
+                } else {
+                    BinaryNode<V> successorParent = current;
+                    BinaryNode<V> successor = current.right;
+                    while (successor.left != null) {
+                        successorParent = successor;
+                        successor = successor.left;
+                    }
+                    current.value = successor.value;
+                    if (successorParent == current) {
+                        current.right = successor.right;
+                    } else {
+                        successorParent.left = successor.right;
+                    }
+                    return node;
+                }
+            }
         }
-
         return node;
     }
 
     @Override
     public boolean exists(V value) {
-        return existsNode(root, value);
-    }
-
-    boolean existsNode(BinaryNode<V> node, V value) {
-        if (node == null) {
-            return false;
+        BinaryNode<V> node = root;
+        while (node != null) {
+            if (node.isGreaterThan(value)) {
+                node = node.left;
+            } else if (node.isLowerThan(value)) {
+                node = node.right;
+            } else {
+                return true;
+            }
         }
 
-        if (node.isLowerThan(value)) {
-            return existsNode(node.left, value);
-        }
-
-        if (node.isGreaterThan(value)) {
-            return existsNode(node.right, value);
-        }
-
-        return true;
+        return false;
     }
 
     public String show() {

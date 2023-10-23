@@ -11,15 +11,11 @@ public class BinaryNode<V extends Comparable<V>> extends Level {
         this.value = value;
     }
 
-    protected boolean isEqualsTo(V value) {
-        return value.compareTo(this.value) == 0;
-    }
-
-    protected boolean isGreaterThan(V value) {
+    protected boolean isLowerThan(V value) {
         return value.compareTo(this.value) > 0;
     }
 
-    protected boolean isLowerThan(V value) {
+    protected boolean isGreaterThan(V value) {
         return value.compareTo(this.value) < 0;
     }
 
