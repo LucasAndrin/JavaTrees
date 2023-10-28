@@ -1,14 +1,19 @@
 import trees.BinarySearchTree;
+import trees.BinaryTree;
 import trees.Tree;
 import trees.btree.BTree;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
-        test();
+        BTree<Integer> bTree = new BTree<>();
+        for (int i = 1; i <= 53; i++) {
+            bTree.add(i);
+        }
+        System.out.println(bTree);
+//        test();
     }
 
     private static void test() {
@@ -16,7 +21,7 @@ public class Main {
         List<Tree<Integer>> trees = new ArrayList<>();
         trees.add(new BTree<>(20));
         trees.add(new BinarySearchTree<>());
-//        trees.add(new BinaryTree<>());
+        trees.add(new BinaryTree<>());
 
         for (int limit : limits) {
             System.out.println("#######################################");

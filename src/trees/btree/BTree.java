@@ -4,7 +4,7 @@ import trees.Tree;
 
 public class BTree<T extends Comparable<T>> implements Tree<T> {
 
-    private int limit = 5;
+    private int max = 5;
 
     private BTreeNode<T> root;
 
@@ -12,15 +12,15 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
 
     }
 
-    public BTree(int limit) {
-        setLimit(limit);
+    public BTree(int max) {
+        setLimit(max);
     }
 
-    private void setLimit(int limit) {
-        if (limit < 3) {
-            throw new IllegalArgumentException("limit must be an integer bigger than 2");
+    private void setLimit(int max) {
+        if (max < 3) {
+            throw new IllegalArgumentException("max must be an integer bigger than 2");
         }
-        this.limit = limit;
+        this.max = max;
     }
 
     @Override
@@ -31,12 +31,15 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
     @Override
     public void add(T value) {
         if (root == null) {
-            root = BTreeNode.create(value, limit).root();
+            root = BTreeNode.create(value, max);
         } else {
             root.add(value);
 
-            if (root.isFull()) {
-                splitRoot();
+            if (root.keysHasSurplus()) {
+                BTreeNode<T> newRoot = BTreeNode.create(max);
+                newRoot.childs.add(root);
+                newRoot.splitChild(0, root);
+                root = newRoot;
             }
         }
     }
@@ -48,20 +51,14 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
 
     @Override
     public void remove(T value) {
-
+        if (root != null) {
+            root.remove(value);
+        }
     }
 
     @Override
     public String show() {
         return null;
-    }
-
-    protected void splitRoot() {
-        BTreeNode<T> newRoot = BTreeNode.create(limit);
-        newRoot.childs.add(root.leaf());
-        newRoot.root().splitChild(0, root);
-
-        root = newRoot;
     }
 
 }
