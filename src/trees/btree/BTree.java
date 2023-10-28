@@ -1,6 +1,7 @@
 package trees.btree;
 
 import trees.Tree;
+import trees.util.Key;
 
 public class BTree<T extends Comparable<T>> implements Tree<T> {
 
@@ -33,7 +34,7 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
         if (root == null) {
             root = BTreeNode.create(value, max);
         } else {
-            root.add(value);
+            root.add(Key.create(value));
 
             if (root.keysHasSurplus()) {
                 BTreeNode<T> newRoot = BTreeNode.create(max);
@@ -48,11 +49,22 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
         return root != null && root.exists(value);
     }
 
-
     @Override
     public void remove(T value) {
         if (root != null) {
-            root.remove(value);
+            Key<T> key = Key.create(value);
+            root.remove(key);
+
+            if (root.keys.isEmpty()) {
+                root = root.getChild(0);
+            } else if (!root.isLeaf() && root.ownKeyWasRemoved()) {
+                int leftIndex = root.getNextIndex(key);
+                BTreeNode<T> leftChild = root.childs.get(leftIndex);
+                int rightIndex = leftIndex + 1;
+                BTreeNode<T> rightChild = root.childs.get(rightIndex);
+
+                root.mergeChilds(rightIndex, leftChild, rightChild);
+            }
         }
     }
 

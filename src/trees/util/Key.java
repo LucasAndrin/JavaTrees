@@ -24,12 +24,20 @@ public class Key<T extends Comparable<T>> {
         return this.value.compareTo(value) < 0;
     }
 
+    public boolean isEqualsTo(Key<T> key) {
+        return this.value.compareTo(key.value) == 0;
+    }
+
     public boolean isGreaterThan(Key<T> key) {
         return this.value.compareTo(key.value) > 0;
     }
 
     public boolean isLowerThan(Key<T> key) {
         return this.value.compareTo(key.value) < 0;
+    }
+
+    public boolean isGreaterOrEqualsTo(Key<T> key) {
+        return isEqualsTo(key) || isGreaterThan(key);
     }
 
     public static <T extends Comparable<T>> Key<T> create(T key) {

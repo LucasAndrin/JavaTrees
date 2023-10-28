@@ -60,13 +60,13 @@ public class BTreeNode<T extends Comparable<T>> {
         return keys.size() < childs.size() - 1;
     }
 
-    protected void add(T value) {
+    protected void add(Key<T> key) {
         if (isLeaf()) {
-            addKey(Key.create(value));
+            addKey(key);
         } else {
-            int index = getNextIndex(value);
+            int index = getNextIndex(key);
             BTreeNode<T> child = childs.get(index);
-            child.add(value);
+            child.add(key);
 
             if (child.keysHasSurplus()) {
                 splitChild(index, child);
@@ -93,15 +93,15 @@ public class BTreeNode<T extends Comparable<T>> {
         return false;
     }
 
-    protected void remove(T value) {
+    protected void remove(Key<T> key) {
         ListIterator<Key<T>> kIterator = keys.listIterator();
         int index = 0;
         while (kIterator.hasNext()) {
-            Key<T> key = kIterator.next();
-            if (key.isEqualsToValue(value)) {
+            Key<T> next = kIterator.next();
+            if (next.isEqualsTo(key)) {
                 kIterator.remove();
                 return;
-            } else if (key.isLowerThanValue(value)) {
+            } else if (next.isLowerThan(key)) {
                 index = kIterator.nextIndex();
             } else {
                 index = kIterator.previousIndex();
@@ -110,9 +110,29 @@ public class BTreeNode<T extends Comparable<T>> {
         }
 
         BTreeNode<T> child = childs.get(index);
-        child.remove(value);
+        child.remove(key);
+
+        if (!child.isLeaf() && child.ownKeyWasRemoved()) {
+            int leftIndex = child.getNextIndex(key);
+            BTreeNode<T> leftChild = child.childs.get(leftIndex);
+
+            if (leftChild.keysHasMoreThanMinimumSize()) {
+                child.keys.add(leftIndex, leftChild.removeGreaterKey());
+                return;
+            }
+
+            int rightIndex = leftIndex + 1;
+            BTreeNode<T> rightChild = child.childs.get(rightIndex);
+            if (rightChild.keysHasMoreThanMinimumSize()) {
+                child.keys.add(leftIndex, rightChild.removeLowerKey());
+                return;
+            }
+
+            child.mergeChilds(rightIndex, leftChild, rightChild);
+        }
 
         if (child.keysHasLack()) {
+            // Check if left brother can borrow a key
             int leftIndex = index - 1;
             BTreeNode<T> leftBrother = getChild(leftIndex);
             if (leftBrother != null && leftBrother.keysHasMoreThanMinimumSize()) {
@@ -121,6 +141,7 @@ public class BTreeNode<T extends Comparable<T>> {
                 return;
             }
 
+            // Check if right brother can borrow a key
             BTreeNode<T> rightBrother = getChild(index + 1);
             if (rightBrother != null && rightBrother.keysHasMoreThanMinimumSize()) {
                 Key<T> newChildKey = keys.set(index, rightBrother.removeLowerKey());
@@ -138,24 +159,6 @@ public class BTreeNode<T extends Comparable<T>> {
                 rightBrother.keys.addAll(0, child.keys);
                 rightBrother.childs.addAll(0, child.childs);
             }
-        } else if (!child.isLeaf() && child.ownKeyWasRemoved()) {
-            int nextIndex = child.getNextIndex(value);
-            BTreeNode<T> leftChild = child.childs.get(nextIndex);
-
-            if (leftChild.keysHasMoreThanMinimumSize()) {
-                child.keys.add(nextIndex, leftChild.removeGreaterKey());
-                return;
-            }
-
-            BTreeNode<T> rightChild = child.childs.get(nextIndex + 1);
-            if (rightChild.keysHasMoreThanMinimumSize()) {
-                child.keys.add(nextIndex, rightChild.removeLowerKey());
-                return;
-            }
-
-            child.childs.remove(nextIndex);
-            rightChild.keys.addAll(0, leftChild.keys);
-            rightChild.childs.addAll(0, leftChild.childs);
         }
     }
 
@@ -194,6 +197,13 @@ public class BTreeNode<T extends Comparable<T>> {
             childs.remove(nextIndex);
         }
         childs.addAll(nextIndex, splitedChildren);
+    }
+
+    protected void mergeChilds(int rightIndex, BTreeNode<T> leftChild, BTreeNode<T> rightChild) {
+        childs.remove(rightIndex);
+
+        leftChild.childs.addAll(rightChild.childs);
+        leftChild.keys.addAll(rightChild.keys);
     }
 
     protected LinkedList<BTreeNode<T>> getSplittedChilds(int splitIndex) {
@@ -241,10 +251,10 @@ public class BTreeNode<T extends Comparable<T>> {
         return null;
     }
 
-    protected int getNextIndex(T value) {
+    protected int getNextIndex(Key<T> key) {
         ListIterator<Key<T>> iterator = keys.listIterator();
         while (iterator.hasNext()) {
-            if (iterator.next().isGreaterOrEqualsToValue(value)) {
+            if (iterator.next().isGreaterOrEqualsTo(key)) {
                 return iterator.previousIndex();
             }
         }

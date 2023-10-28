@@ -1,5 +1,4 @@
 import trees.BinarySearchTree;
-import trees.BinaryTree;
 import trees.Tree;
 import trees.btree.BTree;
 
@@ -12,6 +11,11 @@ public class Main {
         for (int i = 1; i <= 53; i++) {
             bTree.add(i);
         }
+        int[] numbers = {53, 52, 48, 51, 45, 50, 46};
+
+        for (int number : numbers) {
+            bTree.remove(number);
+        }
         System.out.println(bTree);
 //        test();
     }
@@ -21,7 +25,7 @@ public class Main {
         List<Tree<Integer>> trees = new ArrayList<>();
         trees.add(new BTree<>(20));
         trees.add(new BinarySearchTree<>());
-        trees.add(new BinaryTree<>());
+//        trees.add(new BinaryTree<>());
 
         for (int limit : limits) {
             System.out.println("#######################################");
