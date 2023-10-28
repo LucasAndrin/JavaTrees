@@ -14,10 +14,10 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
     }
 
     public BTree(int max) {
-        setLimit(max);
+        setMax(max);
     }
 
-    private void setLimit(int max) {
+    private void setMax(int max) {
         if (max < 3) {
             throw new IllegalArgumentException("max must be an integer bigger than 2");
         }
@@ -63,7 +63,7 @@ public class BTree<T extends Comparable<T>> implements Tree<T> {
                 int rightIndex = leftIndex + 1;
                 BTreeNode<T> rightChild = root.childs.get(rightIndex);
 
-                root.mergeChilds(rightIndex, leftChild, rightChild);
+                root.mergeRightChild(rightIndex, leftChild, rightChild);
             }
         }
     }

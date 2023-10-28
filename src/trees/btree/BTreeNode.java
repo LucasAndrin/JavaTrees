@@ -109,6 +109,10 @@ public class BTreeNode<T extends Comparable<T>> {
             }
         }
 
+        if (!checkChildIndex(index)) {
+            return;
+        }
+
         BTreeNode<T> child = childs.get(index);
         child.remove(key);
 
@@ -128,7 +132,7 @@ public class BTreeNode<T extends Comparable<T>> {
                 return;
             }
 
-            child.mergeChilds(rightIndex, leftChild, rightChild);
+            child.mergeRightChild(rightIndex, leftChild, rightChild);
         }
 
         if (child.keysHasLack()) {
@@ -149,15 +153,12 @@ public class BTreeNode<T extends Comparable<T>> {
                 return;
             }
 
-            childs.remove(index);
             if (leftBrother != null) {
                 leftBrother.addKey(keys.remove(leftIndex));
-                leftBrother.keys.addAll(child.keys);
-                leftBrother.childs.addAll(child.childs);
+                mergeRightChild(index, leftBrother, child);
             } else if (rightBrother != null) {
                 rightBrother.addKey(keys.remove(index));
-                rightBrother.keys.addAll(0, child.keys);
-                rightBrother.childs.addAll(0, child.childs);
+                mergeLeftChild(index, child, rightBrother);
             }
         }
     }
@@ -199,11 +200,17 @@ public class BTreeNode<T extends Comparable<T>> {
         childs.addAll(nextIndex, splitedChildren);
     }
 
-    protected void mergeChilds(int rightIndex, BTreeNode<T> leftChild, BTreeNode<T> rightChild) {
+    protected void mergeRightChild(int rightIndex, BTreeNode<T> leftChild, BTreeNode<T> rightChild) {
         childs.remove(rightIndex);
 
         leftChild.childs.addAll(rightChild.childs);
         leftChild.keys.addAll(rightChild.keys);
+    }
+
+    protected void mergeLeftChild(int leftIndex, BTreeNode<T> leftChild, BTreeNode<T> rightChild) {
+        childs.remove(leftIndex);
+        leftChild.childs.addAll(0, rightChild.childs);
+        leftChild.keys.addAll(0, rightChild.keys);
     }
 
     protected LinkedList<BTreeNode<T>> getSplittedChilds(int splitIndex) {
